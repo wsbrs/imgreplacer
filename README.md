@@ -11,7 +11,7 @@ Add the following lines ot your `composer.json` file:
 ```json
 {
   "require" : {
-    "ssa/imgreplacer": "*"
+    "ssa/imgreplacer": "1.0.*"
   },
   "repositories": [
       {
