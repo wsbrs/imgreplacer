@@ -1,0 +1,22 @@
+{
+    "name": "ssa/imgreplace",
+    "description": "Image replacer",
+    "type": "magento2-module",
+    "version": "2.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "require": {
+        "php": "~7.0.13|~7.1.0",
+        "magento/framework": "~101.0.6"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "SSA\\Imgreplace\\": ""
+        }
+    }
+}
