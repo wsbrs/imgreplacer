@@ -1,8 +1,8 @@
 {
-    "name": "ssa/imgreplace",
+    "name": "ssa/imgreplacer",
     "description": "Image replacer",
-    "type": "magento2-module",
-    "version": "2.0.0",
+    "type": "library",
+    "version": "1.0.0",
     "license": [
         "OSL-3.0",
         "AFL-3.0"

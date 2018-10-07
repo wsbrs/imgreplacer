@@ -11,12 +11,12 @@ Add the following lines ot your `composer.json` file:
 ```json
 {
   "require" : {
-    "ssa/imgreplace": "*"
+    "ssa/imgreplacer": "*"
   },
   "repositories": [
       {
           "type": "vcs",
-          "url": "https://github.com/wsbrs/imgreplace.git"
+          "url": "https://github.com/wsbrs/imgreplacer.git"
       }
   ]
 }
