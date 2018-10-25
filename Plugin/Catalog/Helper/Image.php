@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: brs
- * Date: 06.10.18
- * Time: 19:47
- */
 
 namespace SSA\Imgreplace\Plugin\Catalog\Helper;
-
 
 use Magento\Framework\App\Helper\Context;
 use SSA\Imgreplace\Helper\Product;
@@ -20,26 +13,26 @@ class Image
      *
      * @var \Magento\Framework\App\RequestInterface
      */
-    protected $_request;
+    private $request;
 
     /**
      * Current Product
      *
      * @var \Magento\Catalog\Model\Product
      */
-    protected $_product;
+    private $product;
 
     /**
      * @var string
      */
-    protected $_imageId;
+    private $imageId;
 
     /**
      * List of IDs which are used in the Gallery block
      *
      * @var array
      */
-    protected $_productGalleryImageIds = [
+    private $productGalleryImageIds = [
         'product_page_image_small',
         'product_page_image_medium_no_frame',
         'product_page_image_large_no_frame',
@@ -53,9 +46,8 @@ class Image
     public function __construct(
         Context $context,
         Product $productHelper
-    )
-    {
-        $this->_request = $context->getRequest();
+    ) {
+        $this->request = $context->getRequest();
         $this->productHelper = $productHelper;
     }
 
@@ -68,11 +60,14 @@ class Image
      * @param array $attributes
      * @return array
      */
-    public function beforeInit(\Magento\Catalog\Helper\Image $subject,
-                               $product, $imageId, $attributes = [])
-    {
-        $this->_product = $product;
-        $this->_imageId = $imageId;
+    public function beforeInit(
+        \Magento\Catalog\Helper\Image $subject,
+        $product,
+        $imageId,
+        $attributes = []
+    ) {
+        $this->product = $product;
+        $this->imageId = $imageId;
 
         return [
             $product, $imageId, $attributes
@@ -81,11 +76,10 @@ class Image
 
     public function aroundGetUrl(
         \Magento\Catalog\Helper\Image $subject,
-        Callable $proceed
-    )
-    {
+        \Closure $proceed
+    ) {
         if (!$this->isCalledFromProductGallery() &&
-            ($imageUrl = $this->productHelper->getProductCategoryImageUrl($this->_product))
+            ($imageUrl = $this->productHelper->getProductCategoryImageUrl($this->product))
         ) {
             return $this->_prepareUrl($imageUrl);
         }
@@ -97,17 +91,9 @@ class Image
     /**
      * @return bool
      */
-    protected function isCalledFromProductGallery()
+    private function isCalledFromProductGallery()
     {
-        return in_array($this->_imageId, $this->_productGalleryImageIds);
-    }
-
-    /**
-     * @return \Magento\Framework\App\RequestInterface
-     */
-    protected function _getRequest()
-    {
-        return $this->_request;
+        return in_array($this->imageId, $this->productGalleryImageIds);
     }
 
     /**

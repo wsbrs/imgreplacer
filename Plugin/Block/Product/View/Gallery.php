@@ -3,6 +3,7 @@
 namespace SSA\Imgreplace\Plugin\Block\Product\View;
 
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObjectFactory;
 use SSA\Imgreplace\Helper\Product;
 
 class Gallery
@@ -12,7 +13,7 @@ class Gallery
      *
      * @var \Magento\Framework\App\RequestInterface
      */
-    private $_request;
+    private $request;
 
     /**
      * @var Product
@@ -25,20 +26,27 @@ class Gallery
     private $collectionFactory;
 
     /**
+     * @var DataObjectFactory
+     */
+    private $dataObjectFactory;
+
+    /**
      * Gallery constructor.
      * @param Context $context
      * @param Product $productHelper
      * @param \Magento\Framework\Data\CollectionFactory $collectionFactory
+     * @param DataObjectFactory $dataObjectFactory
      */
     public function __construct(
         Context $context,
         Product $productHelper,
-        \Magento\Framework\Data\CollectionFactory $collectionFactory
-    )
-    {
-        $this->_request = $context->getRequest();
+        \Magento\Framework\Data\CollectionFactory $collectionFactory,
+        DataObjectFactory $dataObjectFactory
+    ) {
+        $this->request = $context->getRequest();
         $this->productHelper = $productHelper;
         $this->collectionFactory = $collectionFactory;
+        $this->dataObjectFactory = $dataObjectFactory;
     }
 
     /**
@@ -46,11 +54,11 @@ class Gallery
      *  If not - original method is called.
      *
      * @param \Magento\Catalog\Block\Product\View\Gallery $subject
-     * @param callable $proceed
+     * @param \Closure $proceed
      * @return \Magento\Framework\Data\Collection
      * @throws \Exception
      */
-    public function aroundGetGalleryImages(\Magento\Catalog\Block\Product\View\Gallery $subject, Callable $proceed)
+    public function aroundGetGalleryImages(\Magento\Catalog\Block\Product\View\Gallery $subject, \Closure $proceed)
     {
         $productAltImages = $this->productHelper->getProductDetailsImages($subject->getProduct());
         if (empty($productAltImages)) {
@@ -67,7 +75,7 @@ class Gallery
             $image['small_image_url'] = $productAltImage;
             $image['medium_image_url'] = $productAltImage;
             $image['large_image_url'] = $productAltImage;
-            $images->addItem(new \Magento\Framework\DataObject($image));
+            $images->addItem($this->dataObjectFactory->create(['data' => $image]));
         }
 
         return $images;

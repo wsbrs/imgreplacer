@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ssa" translate="label" sortOrder="1000">
+            <label>Ssa</label>
+        </tab>
+        <section id="ssa_imgreplace" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Product Alternative Images</label>
+            <tab>ssa</tab>
+            <resource>SSA_Imgreplace::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General</label>
+                <field id="status" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Status</label>
+                    <source_model>\Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+                <field id="url_prefix_product" translate="label" type="text" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>URL path for product page</label>
+                </field>
+                <field id="url_prefix_category" translate="label" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>URL path for category page</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

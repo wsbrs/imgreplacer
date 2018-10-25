@@ -2,9 +2,24 @@
 
 namespace SSA\Imgreplace\Helper;
 
-
 class Product
 {
+
+    /**
+     * @var \SSA\Imgreplace\Model\Config
+     */
+    private $config;
+
+    /**
+     * Product constructor.
+     *
+     * @param \SSA\Imgreplace\Model\Config $config
+     */
+    public function __construct(
+        \SSA\Imgreplace\Model\Config $config
+    ) {
+        $this->config = $config;
+    }
 
     /**
      * Checks whether product has existing extenal image for categories
@@ -14,10 +29,20 @@ class Product
      */
     public function getProductCategoryImageUrl(\Magento\Catalog\Model\Product $product)
     {
-        $categoryImage = $product->getProductCategoryImage();
-        if ($categoryImage && $this->validateImageUrl($categoryImage)
-        ) {
-            return $categoryImage;
+        if (!$this->config->isEnabled()) {
+            return null;
+        }
+
+        $urlPrefix = $this->config->getCategoryUrlPrefix();
+        $categoryImage = trim($product->getProductCategoryImage());
+        if (!$urlPrefix || !$categoryImage) {
+            return null;
+        }
+
+        $categoryImage = ltrim($categoryImage, '/');
+        $imageUrl = $urlPrefix . $categoryImage;
+        if ($this->validateImageUrl($imageUrl)) {
+            return $imageUrl;
         }
 
         return null;
@@ -31,12 +56,15 @@ class Product
      */
     public function getProductDetailsImages(\Magento\Catalog\Model\Product $product)
     {
-        $urlPrefix = $product->getProductImageUrlPrefix();
+        if (!$this->config->isEnabled()) {
+            return [];
+        }
+
+        $urlPrefix = $this->config->getProductUrlPrefix();
         $files = $product->getProductImageFilenames();
         if (!$urlPrefix || !$files) {
             return [];
         }
-        $urlPrefix = rtrim(trim($urlPrefix), '/') . '/';
 
         $result = [];
 
